@@ -27,6 +27,7 @@ project "Game"
     
     links
     {
+        "GLFW",
         "imgui",
         "Can"
     }

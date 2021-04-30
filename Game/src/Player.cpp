@@ -62,29 +62,25 @@ void Player::Update(float ts)
 		MoveHorizontal(false);	// Right
 }
 
-void Player::Draw(const glm::vec2 & offset)
+void Player::Draw(const glm::vec2& offset)
 {
+	Can::DrawQuadParameters params = Can::DrawQuadParameters();
 	for (int i = 0; i < m_Height; i++)
 	{
 		for (int j = 0; j < m_Width; j++)
 		{
-			Can::Renderer2D::DrawQuad(
-				{ offset.x + j, offset.y + i },
-				{ 1.0f, 1.0f },
-				{ 0.05f, 0.05f, 0.05f, 1.0f }
-			);
+			params.Position = { offset.x + j, offset.y + i, 0.0f };
+			params.Size = glm::vec2(1.0f);
+			params.TintColor = { 0.3f, 0.8f, 0.2f, 1.0f };
+			Can::Renderer2D::DrawQuad(params);
+			Can::Renderer2D::DrawQuad(params);
+			params.Position.z = 0.01f;
+			params.Size = glm::vec2(0.9f);
 			if (m_State[i][j])
-				Can::Renderer2D::DrawQuad(
-					{ offset.x + j,offset.y + i, 0.01f },
-					{ 0.9f, 0.9f },
-					{ 0.3f, 0.8f, 0.2f, 1.0f }
-			);
+				params.TintColor = { 0.3f, 0.8f, 0.2f, 1.0f };
 			else
-				Can::Renderer2D::DrawQuad(
-					{ offset.x + j, offset.y + i, 0.01f },
-					{ 0.9f, 0.9f },
-					{ 0.9f, 0.9f, 0.9f, 1.0f }
-			);
+				params.TintColor = { 0.9f, 0.9f, 0.9f, 1.0f };
+			Can::Renderer2D::DrawQuad(params);
 		}
 	}
 
@@ -94,11 +90,12 @@ void Player::Draw(const glm::vec2 & offset)
 			for (int j = 0; j < m_CurrentBlock[0].size(); j++)
 			{
 				if (m_CurrentBlock[i][j])
-					Can::Renderer2D::DrawQuad(
-						{ offset.x + j + m_CurrentX, offset.y - i + m_CurrentY, 0.011f },
-						{ 0.9f, 0.9f },
-						{ 0.3f, 0.2f, 0.8f, 1.0f }
-				);
+				{
+					params.Position = { offset.x + j + m_CurrentX, offset.y - i + m_CurrentY, 0.011f };
+					params.Size = glm::vec2(0.9f);
+					params.TintColor = { 0.3f, 0.8f, 0.2f, 1.0f };
+					Can::Renderer2D::DrawQuad(params);
+				}
 			}
 		}
 
@@ -111,34 +108,19 @@ void Player::Draw(const glm::vec2 & offset)
 		{
 			for (int j = 0; j < block[0].size(); j++)
 			{
-				Can::Renderer2D::DrawQuad(
-					{
-						offset.x + j + pos.x,
-						offset.y - i + pos.y
-					},
-					{ 1.0f, 1.0f },
-					{ 0.05f, 0.05f, 0.05f, 1.0f }
-				);
+				params.Position = { offset.x + j + pos.x, offset.y - i + pos.y, 0.0f };
+				params.Size = glm::vec2(1.0f);
+				params.TintColor = { 0.05f, 0.05f, 0.05f, 1.0f };
+				Can::Renderer2D::DrawQuad(params);
+				params.Position.z = 0.011f;
+				params.Size = glm::vec2(0.9f);
 
 				if (block[i][j])
-					Can::Renderer2D::DrawQuad(
-						{
-							offset.x + j + pos.x,
-							offset.y - i + pos.y,
-							0.011f
-						},
-						{ 0.9f, 0.9f },
-						{ 0.3f, 0.2f, 0.8f, 1.0f }
-				);
+					params.TintColor = { 0.3f, 0.2f, 0.8f, 1.0f };
 				else
-					Can::Renderer2D::DrawQuad(
-						{
-							offset.x + j + pos.x,
-							offset.y - i + pos.y,
-							0.011f },
-						{ 0.9f, 0.9f },
-						{ 0.9f, 0.9f, 0.9f, 1.0f }
-				);
+					params.TintColor = { 0.9f, 0.9f, 0.9f, 1.0f };
+
+				Can::Renderer2D::DrawQuad(params);
 			}
 		}
 		pos = { m_Width + 2, (m_Height * 2.0f) / 2.0f - 2.0f };
@@ -147,37 +129,22 @@ void Player::Draw(const glm::vec2 & offset)
 		{
 			for (int j = 0; j < block[0].size(); j++)
 			{
-				Can::Renderer2D::DrawQuad(
-					{
-						offset.x + j + pos.x,
-						offset.y - i + pos.y
-					},
-					{ 1.0f, 1.0f },
-					{ 0.05f, 0.05f, 0.05f, 1.0f }
-				);
+				params.Position = { offset.x + j + pos.x, offset.y - i + pos.y, 0.0f };
+				params.Size = glm::vec2(1.0f);
+				params.TintColor = { 0.05f, 0.05f, 0.05f, 1.0f };
+				Can::Renderer2D::DrawQuad(params);
+				params.Position.z = 0.011f;
+				params.Size = glm::vec2(0.9f);
 
 				if (block[i][j])
-					Can::Renderer2D::DrawQuad(
-						{
-							offset.x + j + pos.x,
-							offset.y - i + pos.y,
-							0.011f
-						},
-						{ 0.9f, 0.9f },
-						{ 0.3f, 0.2f, 0.8f, 1.0f }
-				);
+					params.TintColor = { 0.3f, 0.2f, 0.8f, 1.0f };
 				else
-					Can::Renderer2D::DrawQuad(
-						{
-							offset.x + j + pos.x,
-							offset.y - i + pos.y,
-							0.011f },
-						{ 0.9f, 0.9f },
-						{ 0.9f, 0.9f, 0.9f, 1.0f }
-				);
+					params.TintColor = { 0.9f, 0.9f, 0.9f, 1.0f };
+
+				Can::Renderer2D::DrawQuad(params);
 			}
 		}
-		
+
 	}
 }
 
@@ -190,7 +157,7 @@ void Player::MoveBlockDown()
 	NewBlock();
 }
 
-bool Player::WillCrush(const glm::vec2 & direction)
+bool Player::WillCrush(const glm::vec2& direction)
 {
 	int height = m_CurrentBlock.size();
 	for (size_t i = 0; i < height; i++)
@@ -264,8 +231,8 @@ int Player::Think()
 	state[index + BLOCK_QUEUE_SIZE + 2] = (m_CurrentY + 1.0f) / (m_Height + 1.0f);
 	state[index + BLOCK_QUEUE_SIZE + 3] = (m_CurrentBlockRotation + 1.0f) / (4.0f);
 
-	Matrix * input = new Matrix(STATE_SIZE, 1, state);
-	Matrix * result = m_Brain->FeedForward(input);
+	Matrix* input = new Matrix(STATE_SIZE, 1, state);
+	Matrix* result = m_Brain->FeedForward(input);
 
 	float A[5] = {
 		result->data[0],	// Don't Do anything

@@ -8,10 +8,11 @@
 class Tetris : public Can::Application
 {
 public:
-	Tetris()
+	Tetris(const Can::WindowProps& props)
+		:Application(props)
 	{
 		ImGuiIO& io = ImGui::GetIO();
-		io.Fonts->AddFontFromFileTTF("assets/fonts/Poppins-Light.otf", 24.0f);
+		io.Fonts->AddFontFromFileTTF("assets/fonts/Poppins/Poppins-Light.ttf", 24.0f);
 		PushLayer(new GameLayer());
 	}
 
@@ -21,7 +22,7 @@ public:
 	}
 };
 
-Can::Application* Can::CreateApplication()
+Can::Application* Can::CreateApplication(const Can::WindowProps& props)
 {
-	return new Tetris();
+	return new Tetris(props);
 }

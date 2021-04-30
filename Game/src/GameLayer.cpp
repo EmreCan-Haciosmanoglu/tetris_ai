@@ -289,6 +289,8 @@ void GameLayer::DrawGame()
 
 void GameLayer::DrawToLabel()
 {
+	Can::DrawQuadParameters params = Can::DrawQuadParameters();
+
 	std::array<float, STATE_SIZE> state = b_Modify ? m_UnlearnedData[m_UnlearnedDataIndex] : m_UnlabeledData[m_LabelIndex];
 	std::vector<std::vector<bool>> blockX = GetBlock(state[STATE_SIZE - 4]);
 	glm::vec2 offset = {
@@ -300,23 +302,19 @@ void GameLayer::DrawToLabel()
 	{
 		for (int j = 0; j < m_GameWidth; j++)
 		{
-			Can::Renderer2D::DrawQuad(
-				{ offset.x + j, offset.y + i },
-				{ 1.0f, 1.0f },
-				{ 0.05f, 0.05f, 0.05f, 1.0f }
-			);
+			params.Position = { offset.x + j, offset.y + i, 0.0f };
+			params.Size = glm::vec2(1.0f);
+			params.TintColor = { 0.05f, 0.05f, 0.05f, 1.0f };
+			Can::Renderer2D::DrawQuad(params);
+			params.Position.z = 0.011f;
+			params.Size = glm::vec2(0.9f);
+
 			if (state[index] == 1)
-				Can::Renderer2D::DrawQuad(
-					{ offset.x + j, offset.y + i, 0.011f },
-					{ 0.9f, 0.9f },
-					{ 0.3f, 0.8f, 0.2f, 1.0f }
-			);
+				params.TintColor = { 0.3f, 0.2f, 0.8f, 1.0f };
 			else
-				Can::Renderer2D::DrawQuad(
-					{ offset.x + j, offset.y + i, 0.01f },
-					{ 0.9f, 0.9f },
-					{ 0.9f, 0.9f, 0.9f, 1.0f }
-			);
+				params.TintColor = { 0.9f, 0.9f, 0.9f, 1.0f };
+
+			Can::Renderer2D::DrawQuad(params);
 			index++;
 		}
 	}
@@ -328,34 +326,19 @@ void GameLayer::DrawToLabel()
 	{
 		for (int j = 0; j < block1[0].size(); j++)
 		{
-			Can::Renderer2D::DrawQuad(
-				{
-					offset.x + j + pos.x,
-					offset.y - i + pos.y
-				},
-				{ 1.0f, 1.0f },
-				{ 0.05f, 0.05f, 0.05f, 1.0f }
-			);
+			params.Position = { offset.x + j + pos.x, offset.y - i + pos.y, 0.0f };
+			params.Size = glm::vec2(1.0f);
+			params.TintColor = { 0.05f, 0.05f, 0.05f, 1.0f };
+			Can::Renderer2D::DrawQuad(params);
+			params.Position.z = 0.011f;
+			params.Size = glm::vec2(0.9f);
 
 			if (block1[i][j])
-				Can::Renderer2D::DrawQuad(
-					{
-						offset.x + j + pos.x,
-						offset.y - i + pos.y,
-						0.011f
-					},
-					{ 0.9f, 0.9f },
-					{ 0.3f, 0.2f, 0.8f, 1.0f }
-			);
+				params.TintColor = { 0.3f, 0.2f, 0.8f, 1.0f };
 			else
-				Can::Renderer2D::DrawQuad(
-					{
-						offset.x + j + pos.x,
-						offset.y - i + pos.y,
-						0.011f },
-					{ 0.9f, 0.9f },
-					{ 0.9f, 0.9f, 0.9f, 1.0f }
-			);
+				params.TintColor = { 0.9f, 0.9f, 0.9f, 1.0f };
+
+			Can::Renderer2D::DrawQuad(params);
 		}
 	}
 	pos = { m_GameWidth + 2, (m_GameHeight * 2.0f) / 2.0f - 2.0f };
@@ -364,36 +347,23 @@ void GameLayer::DrawToLabel()
 	{
 		for (int j = 0; j < block2[0].size(); j++)
 		{
-			Can::Renderer2D::DrawQuad(
-				{
-					offset.x + j + pos.x,
-					offset.y - i + pos.y
-				},
-				{ 1.0f, 1.0f },
-				{ 0.05f, 0.05f, 0.05f, 1.0f }
-			);
+			params.Position = { offset.x + j + pos.x, offset.y - i + pos.y, 0.0f };
+			params.Size = glm::vec2(1.0f);
+			params.TintColor = { 0.05f, 0.05f, 0.05f, 1.0f };
+			Can::Renderer2D::DrawQuad(params);
+			params.Position.z = 0.011f;
+			params.Size = glm::vec2(0.9f);
 
 			if (block2[i][j])
-				Can::Renderer2D::DrawQuad(
-					{
-						offset.x + j + pos.x,
-						offset.y - i + pos.y,
-						0.011f
-					},
-					{ 0.9f, 0.9f },
-					{ 0.3f, 0.2f, 0.8f, 1.0f }
-			);
+				params.TintColor = { 0.3f, 0.2f, 0.8f, 1.0f };
 			else
-				Can::Renderer2D::DrawQuad(
-					{
-						offset.x + j + pos.x,
-						offset.y - i + pos.y,
-						0.011f },
-					{ 0.9f, 0.9f },
-					{ 0.9f, 0.9f, 0.9f, 1.0f }
-			);
+				params.TintColor = { 0.9f, 0.9f, 0.9f, 1.0f };
+
+			Can::Renderer2D::DrawQuad(params);
 		}
 	}
+	params.Size = glm::vec2(0.9f);
+	params.TintColor = { 0.3f, 0.2f, 0.8f, 1.0f };
 
 	int blockXh = blockX.size();
 	int blockXw = blockX[0].size();
@@ -403,46 +373,28 @@ void GameLayer::DrawToLabel()
 		{
 			if (blockX[i][j])
 			{
+				params.Position = {
+						offset.x + j + state[(size_t)index + (size_t)BLOCK_QUEUE_SIZE + 1],
+						offset.y - i + state[(size_t)index + (size_t)BLOCK_QUEUE_SIZE + 2],
+						0.011f
+				};
 				if (state[(size_t)index + (size_t)BLOCK_QUEUE_SIZE + 3] == 0)
-					Can::Renderer2D::DrawQuad(
-						{
-							offset.x + j + state[(size_t)index + (size_t)BLOCK_QUEUE_SIZE + 1],
-							offset.y - i + state[(size_t)index + (size_t)BLOCK_QUEUE_SIZE + 2],
-							0.011f
-						},
-						{ 0.9f, 0.9f },
-						{ 0.3f, 0.2f, 0.8f, 1.0f }
-				);
+				{
+				}
 				else if (state[(size_t)index + (size_t)BLOCK_QUEUE_SIZE + 3] == 1)
-					Can::Renderer2D::DrawQuad(
-						{
-							offset.x - i + state[(size_t)index + (size_t)BLOCK_QUEUE_SIZE + 1] + blockXh - 1,
-							offset.y - j + state[(size_t)index + (size_t)BLOCK_QUEUE_SIZE + 2],
-							0.011f
-						},
-						{ 0.9f, 0.9f },
-						{ 0.3f, 0.2f, 0.8f, 1.0f }
-				);
+				{
+					params.Position.x += blockXh - 1;
+				}
 				else if (state[(size_t)index + (size_t)BLOCK_QUEUE_SIZE + 3] == 2)
-					Can::Renderer2D::DrawQuad(
-						{
-							offset.x - j + state[(size_t)index + (size_t)BLOCK_QUEUE_SIZE + 1] + blockXw - 1,
-							offset.y + i + state[(size_t)index + (size_t)BLOCK_QUEUE_SIZE + 2] - blockXh + 1,
-							0.011f
-						},
-						{ 0.9f, 0.9f },
-						{ 0.3f, 0.2f, 0.8f, 1.0f }
-				);
+				{
+					params.Position.x += blockXh - 1;
+					params.Position.y += -blockXh + 1;
+				}
 				else if (state[(size_t)index + (size_t)BLOCK_QUEUE_SIZE + 3] == 3)
-					Can::Renderer2D::DrawQuad(
-						{
-							offset.x + i + state[(size_t)index + (size_t)BLOCK_QUEUE_SIZE + 1],
-							offset.y + j + state[(size_t)index + (size_t)BLOCK_QUEUE_SIZE + 2] - blockXw + 1,
-							0.011f
-						},
-						{ 0.9f, 0.9f },
-						{ 0.3f, 0.2f, 0.8f, 1.0f }
-				);
+				{
+					params.Position.y += -blockXh + 1;
+				}
+				Can::Renderer2D::DrawQuad(params);
 			}
 		}
 	}
